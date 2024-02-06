@@ -33,9 +33,7 @@ export async function getPoll( app: FastifyInstance ) {
             }
 
             return response.status(201).send({
-                id: poll.id,
-                title: poll.title,
-                updatedAt: poll.updatedAt
+                poll
             })
 
         } catch (error) {
