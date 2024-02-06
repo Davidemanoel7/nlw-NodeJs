@@ -1,12 +1,14 @@
 import fastify from 'fastify';
 
-import { createPoll } from './routes/poll.routes';
+import { createPoll } from './routes/post-poll';
+import { getPoll } from './routes/get-poll';
 
 const app = fastify();
-app.register(createPoll);
 
+app.register(createPoll);
+app.register(getPoll);
 
 app.listen({ port: 3333 })
     .then( () => {
-        console.log('HTTP server bixo piruleta funciona hehehe!')
+        console.log('HTTP server running')
     });
