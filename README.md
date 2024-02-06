@@ -61,6 +61,6 @@ Se você quiser contribuir para o projeto, siga estas etapas:
 3. Faça commit das suas mudanças (`git commit -am 'Adiciona uma nova feature'`)
 4. Faça push para a branch (`git push origin feature/MinhaFeature`)
 5. Abra um Pull Request
-
+<!-- 
 ## Licença :scroll:
-
+ -->
