@@ -1,3 +1,7 @@
+# Este arquivo
+
+Neste arquivo eu escrevi, de acordo com o progresso do [Next Level Week](https://www.rocketseat.com.br/eventos/nlw) da [rocketseat](https://www.rocketseat.com.br/), meu aprendizado durante a trilha de NodeJs. Servindo até como um tutorial.
+
 # Como criar um projeto NodeJs do zero.
 
 - Verifique sua versão do Node no _terminal_. Caso não tenha, [instale-o](https://nodejs.org/en).
