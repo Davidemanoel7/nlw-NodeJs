@@ -32,7 +32,7 @@ export async function getPoll( app: FastifyInstance ) {
                 })
             }
 
-            return response.status(201).send({
+            return response.status(200).send({
                 poll
             })
 
