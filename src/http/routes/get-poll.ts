@@ -34,7 +34,9 @@ export async function getPoll( app: FastifyInstance ) {
             }
 
             const countVotes = await redis.zrange( pollId, 0, -1, 'WITHSCORES');
-            
+            // zrange retorna um array de strings
+
+            // O metodo reduce foi usado abaixo para converter o valor do array em um objeto do tipo string : value
             const votes = countVotes.reduce( (obj, line, index) => {
                 if ( index % 2 === 0 ) {
                     const score = countVotes[ index + 1 ];
