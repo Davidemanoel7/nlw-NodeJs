@@ -2,6 +2,8 @@ import z from "zod";
 import { prisma } from "../../lib/prisma";
 import { FastifyInstance } from "fastify";
 import { randomUUID } from "crypto";
+import { redis } from "../../lib/redis";
+import { voting } from "../../utils/vote-pub-sub";
 
 export async function voteOnPoll( app: FastifyInstance ) {
     app.post('/polls/:pollId/votes/', async (request, response) => {
@@ -32,13 +34,24 @@ export async function voteOnPoll( app: FastifyInstance ) {
                         }
                     }
                 })
-                
+
+                // Caso o usuário queira votar em outra opção diferente da que ele já votou...
                 if ( userPreviusVote && userPreviusVote.pollOptionId !== pollOptionId ) {
                     await prisma.vote.delete({
                         where: {
                             id: userPreviusVote.id
                         }
                     });
+
+                    // Decrementando em -1 a opção {userPreviusVote.pollOptionId} da enquete {pollId}
+                    const votes = await redis.zincrby( pollId, -1, userPreviusVote.pollOptionId );
+
+                    voting.publish( pollId, {
+                        pollOptionId: userPreviusVote.pollOptionId,
+                        votes: Number(votes)
+                    })
+
+
                 } else if ( userPreviusVote ) {
                     return response.status(400).send({
                         message: `You already voted on this poll`
@@ -63,6 +76,14 @@ export async function voteOnPoll( app: FastifyInstance ) {
                     pollId,
                     pollOptionId
                 }
+            })
+
+            // Incrementa em 1 a opção {pollOptionId} da enquete {pollId}
+            const votes = await redis.zincrby( pollId, 1, pollOptionId );
+
+            voting.publish( pollId, {
+                pollOptionId,
+                votes: Number(votes)
             })
 
             return response.status(201).send({
